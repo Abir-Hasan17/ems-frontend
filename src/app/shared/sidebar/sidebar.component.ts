@@ -7,4 +7,18 @@ import { SidebarNavElimentComponent } from '../sidebar-nav-eliment/sidebar-nav-e
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })
-export class SidebarComponent {}
+export class SidebarComponent {
+  navItems = [
+    { navLabel: 'Home', navRoute: 'home', navIcon: 'house.svg' },
+    {
+      navLabel: 'Incomes',
+      navRoute: 'incomes',
+      navIcon: 'banknote-arrow-up.svg',
+    },
+    {
+      navLabel: 'Expenses',
+      navRoute: 'expenses',
+      navIcon: 'banknote-arrow-down.svg',
+    },
+  ];
+}

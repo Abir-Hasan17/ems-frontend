@@ -1,47 +1,52 @@
 <div
-  class="box-border h-screen w-64 bg-sky-200 shadow-md flex flex-col justify-between p-4"
+  class="box-border h-screen w-64 bg-sky-200 shadow-md flex flex-col justify-between"
 >
   <!-- Top Section -->
   <div>
     <!-- Logo -->
-    <div class="text-2xl font-bold text-sky-600 mb-6 ps-1">
+    <div class="text-2xl font-bold text-sky-600 mb-6 p-4">
       Expenditure Management System
     </div>
 
     <!-- User Info Placeholder -->
-    <div class="bg-gray-100 rounded-lg p-4 mb-6">
+    <div class="bg-gray-100 rounded-lg mb-6 p-4 mx-4">
       <div class="w-12 h-12 bg-gray-300 rounded-full mb-2"></div>
       <div class="h-4 bg-gray-300 rounded w-3/4 mb-1"></div>
       <div class="h-3 bg-gray-300 rounded w-1/2"></div>
     </div>
 
     <!-- Navigation -->
-    <nav class="flex flex-col gap-2 rounded-xl">
-      <app-sidebar-nav-eliment
-        navLabel="Dashboard"
-        navRoute=""
-      ></app-sidebar-nav-eliment>
-
-      <app-sidebar-nav-eliment
-        navLabel="Incomes"
-        navRoute=""
-      ></app-sidebar-nav-eliment>
-
-      <app-sidebar-nav-eliment
-        navLabel="Expenses"
-        navRoute=""
-      ></app-sidebar-nav-eliment>
+    <nav class="flex flex-col gap-0 rounded-xl">
+      @for (item of navItems; track item.navRoute) {
+      <app-sidebar-nav-eliment [navItem]="item"></app-sidebar-nav-eliment>
+      }
     </nav>
   </div>
 
   <!-- Bottom Section -->
-  <div>
+  <div class="w-full flex flex-col">
     <button
-      class="flex items-center gap-2 text-red-600 font-medium hover:text-red-800 mb-4"
+      class="flex items-center gap-1 px-4 py-2 bg-sky-300 border-0 text-red-600 font-medium hover:text-red-800"
     >
-      <i class="lucide lucide-log-out w-5 h-5"></i>
+      <img src="assets/power-red.svg" class="" />
       Logout
     </button>
-    <p class="text-sm text-gray-400">© 2025 ZART Inc.</p>
+    <div class="bg-sky-900 min-h-30 py-2">
+      <p class="text-sm text-sky-100 px-4">© Copy Right 2025.</p>
+      <div class="flex flex-row w-full gap-6 box-border px-4 py-4">
+        <img
+          src="assets/mail.svg"
+          class="bg-sky-200 rounded-xl p-0.5 h-9 w-9"
+        />
+        <img
+          src="assets/github.svg"
+          class="bg-sky-200 rounded-xl p-0.5 h-9 w-9"
+        />
+        <img
+          src="assets/linkedin.svg"
+          class="bg-sky-200 rounded-xl p-0.5 h-9 w-9"
+        />
+      </div>
+    </div>
   </div>
 </div>

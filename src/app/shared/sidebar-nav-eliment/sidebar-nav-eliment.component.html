@@ -1,9 +1,11 @@
 <a
-  routerLink="/{{ navRoute }}"
-  class="flex items-center gap-3 py-1 rounded-lg transition-all hover:bg-sky-100 group"
+  routerLink="/{{ navItem.navRoute }}"
+  class="flex items-center gap-3 py-2 px-4 transition-all hover:bg-sky-100 no-underline"
 >
-  <i
-    class="lucide lucide-home w-5 h-5 text-sky-600 group-hover:text-sky-600"
-  ></i>
-  <span class="text-gray-800 font-medium">{{ navLabel }}</span>
+  <img
+    [src]="'assets/' + navItem.navIcon"
+    alt="{{ navItem.navLabel }} icon"
+    class="w-5 h-5"
+  />
+  <span class="text-sky-900 font-medium">{{ navItem.navLabel }}</span>
 </a>

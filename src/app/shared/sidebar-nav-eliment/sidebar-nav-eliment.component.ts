@@ -9,6 +9,5 @@ import { RouterModule } from '@angular/router';
   styleUrl: './sidebar-nav-eliment.component.css',
 })
 export class SidebarNavElimentComponent {
-  @Input() navLabel = '';
-  @Input() navRoute = '';
+  @Input() navItem = { navLabel: '', navRoute: '', navIcon: '' };
 }
