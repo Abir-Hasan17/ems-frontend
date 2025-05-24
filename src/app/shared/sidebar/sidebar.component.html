@@ -1,0 +1,47 @@
+<div
+  class="box-border h-screen w-64 bg-sky-200 shadow-md flex flex-col justify-between p-4"
+>
+  <!-- Top Section -->
+  <div>
+    <!-- Logo -->
+    <div class="text-2xl font-bold text-sky-600 mb-6 ps-1">
+      Expenditure Management System
+    </div>
+
+    <!-- User Info Placeholder -->
+    <div class="bg-gray-100 rounded-lg p-4 mb-6">
+      <div class="w-12 h-12 bg-gray-300 rounded-full mb-2"></div>
+      <div class="h-4 bg-gray-300 rounded w-3/4 mb-1"></div>
+      <div class="h-3 bg-gray-300 rounded w-1/2"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex flex-col gap-2 rounded-xl">
+      <app-sidebar-nav-eliment
+        navLabel="Dashboard"
+        navRoute=""
+      ></app-sidebar-nav-eliment>
+
+      <app-sidebar-nav-eliment
+        navLabel="Incomes"
+        navRoute=""
+      ></app-sidebar-nav-eliment>
+
+      <app-sidebar-nav-eliment
+        navLabel="Expenses"
+        navRoute=""
+      ></app-sidebar-nav-eliment>
+    </nav>
+  </div>
+
+  <!-- Bottom Section -->
+  <div>
+    <button
+      class="flex items-center gap-2 text-red-600 font-medium hover:text-red-800 mb-4"
+    >
+      <i class="lucide lucide-log-out w-5 h-5"></i>
+      Logout
+    </button>
+    <p class="text-sm text-gray-400">© 2025 ZART Inc.</p>
+  </div>
+</div>
