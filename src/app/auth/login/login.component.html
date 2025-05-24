@@ -1,0 +1,71 @@
+<div class="h-full flex flex-row justify-center items-center bg-sky-200">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    class="inline-flex flex-col px-5 pt-5 pb-6 overflow-hidden items-center gap-4 rounded-2xl shadow-2xl shadow-gray-500 min-w-95 bg-white"
+  >
+    <div class="flex flex-col gap-0 items-center">
+      <p class="text-sky-600 font-bold text-3xl m-0">Log in to ESM</p>
+      <p class="m-0 text-sm font-thin">
+        Keep track of your expense and get rich
+      </p>
+    </div>
+
+    <div class="h-1"></div>
+
+    <div class="inline-flex flex-col w-full">
+      <app-input
+        formControlName="email"
+        label="E-mail"
+        type="email"
+      ></app-input>
+      @if (form.get('email')?.touched && form.get('email')?.invalid) {
+      <div class="text-red-500 text-sm font-thin ps-1.5">
+        @if (form.get('email')?.errors?.['required']) {
+        <span>Email is required</span>
+        } @if (form.get('email')?.errors?.['email']) {
+        <span>Enter a valid email address</span>
+        }
+      </div>
+      }
+    </div>
+
+    <div class="inline-flex flex-col w-full">
+      <app-input
+        formControlName="password"
+        label="Password"
+        type="password"
+      ></app-input>
+      @if (form.get('password')?.touched && form.get('password')?.invalid) {
+      <div class="text-red-500 text-sm font-thin ps-1.5">
+        @if (form.get('password')?.errors?.['required']) {
+        <span>Password is required</span>
+        } @if (form.get('password')?.errors?.['minlength']) {
+        <span>Needs to be atleast 8 charracters</span>
+        }
+      </div>
+      }
+    </div>
+
+    @if(buttonState == loginButtonState.active){
+    <button
+      type="submit"
+      [disabled]="form.invalid && form.touched"
+      class="rounded-2xl min-h-8 min-w-25 bg-sky-400 text-white border-amber-100 disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      Login
+    </button>
+    } @else if (buttonState == loginButtonState.loading) {
+    <span class="loader"></span>
+    }
+
+    <small class="font-thin text-gray-600"
+      >Don't have an account?
+      <a
+        routerLink="/register"
+        class="cursor-pointer text-blue-500 hover:underline"
+        >Sign up</a
+      >.</small
+    >
+  </form>
+</div>

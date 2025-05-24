@@ -1,0 +1,20 @@
+<div class="p-0 rounded-lg w-full bg-white">
+  <div class="relative w-full bg-inherit">
+    <input
+      type="{{ type }}"
+      id="{{ label }}"
+      [value]="value"
+      (input)="handleInput($event)"
+      (blur)="onTouched()"
+      name="username"
+      class="peer w-full box-border bg-inherit h-10 rounded-lg text-gray-700 placeholder-transparent px-3 ring-2 ring-sky-400 focus:ring-sky-700 outline-none"
+      placeholder="Type inside me"
+    />
+    <label
+      for="{{ label }}"
+      class="absolute left-3 -top-3 text-sm text-gray-500 bg-inherit px-1 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-focus:-top-3 peer-focus:text-sky-700 peer-focus:text-sm"
+    >
+      {{ label }}
+    </label>
+  </div>
+</div>
