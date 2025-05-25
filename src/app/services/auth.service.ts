@@ -10,7 +10,11 @@ export class AuthService {
   http = inject(HttpClient);
   url = `${environment.apiUrl}/auth/login`;
   login(loginRequest: login_Request) {
-    return this.http.post<login_Response>(this.url, loginRequest);
+    return this.http.post<login_Response>(this.url, loginRequest, {
+      withCredentials: true,
+    });
   }
+
+  // signUp(signUpRequest: )
   constructor() {}
 }

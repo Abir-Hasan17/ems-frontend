@@ -1,0 +1,95 @@
+import { trxType } from './enumerators';
+import { trx } from './interfaces';
+
+export var trxDummy: trx[] = [
+  {
+    label: 'Grocery',
+    amount: 150,
+    date: '2025-05-22',
+    type: trxType.expense,
+  },
+  {
+    label: 'Freelance Work',
+    amount: 2000,
+    date: '2025-05-20',
+    type: trxType.income,
+  },
+  {
+    label: 'Dinner',
+    amount: 400,
+    date: '2025-05-18',
+    type: trxType.expense,
+  },
+  {
+    label: 'Electricity Bill',
+    amount: 120,
+    date: '2025-05-17',
+    type: trxType.expense,
+  },
+  {
+    label: 'Salary',
+    amount: 5000,
+    date: '2025-05-15',
+    type: trxType.income,
+  },
+  {
+    label: 'Coffee',
+    amount: 60,
+    date: '2025-05-14',
+    type: trxType.expense,
+  },
+  {
+    label: 'Stock Dividend',
+    amount: 350,
+    date: '2025-05-13',
+    type: trxType.income,
+  },
+  {
+    label: 'Bus Fare',
+    amount: 35,
+    date: '2025-05-12',
+    type: trxType.expense,
+  },
+  {
+    label: 'Online Course Refund',
+    amount: 180,
+    date: '2025-05-11',
+    type: trxType.income,
+  },
+  {
+    label: 'Mobile Recharge',
+    amount: 50,
+    date: '2025-05-10',
+    type: trxType.expense,
+  },
+  {
+    label: 'Bonus',
+    amount: 1000,
+    date: '2025-05-09',
+    type: trxType.income,
+  },
+  {
+    label: 'Gym Membership',
+    amount: 600,
+    date: '2025-05-08',
+    type: trxType.expense,
+  },
+  {
+    label: 'Sold Old Phone',
+    amount: 800,
+    date: '2025-05-06',
+    type: trxType.income,
+  },
+  {
+    label: 'Netflix Subscription',
+    amount: 200,
+    date: '2025-05-05',
+    type: trxType.expense,
+  },
+  {
+    label: 'Book Sale',
+    amount: 120,
+    date: '2025-05-04',
+    type: trxType.income,
+  },
+];
