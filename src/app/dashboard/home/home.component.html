@@ -3,10 +3,40 @@
 
   <!-- balance -->
   <div class="flex flex-row rounded-xl h-full w-full box-border">
-    <app-balance-report class="h-full p-2 box-border"></app-balance-report>
-    <app-balance-line-chart
-      [transactions]="trxList"
-      class="box-border flex p-2 h-full w-full"
-    ></app-balance-line-chart>
+    <app-balance-report class="h-full p-4 box-border"></app-balance-report>
+    <div class="flex flex-col box-border gap-4 p-4 w-full h-full">
+      <app-line-chart
+        [transactions]="trxList"
+        label="Balance Over Time"
+        [fillGradient]="trxFillGradient"
+        [lineGradient]="trxLineGradient"
+        bgColor="bg-slate-200 border-2 border-slate-700"
+        txtColor="text-violet-900"
+        class="box-border flex"
+      ></app-line-chart>
+
+      <div class="flex flex-row gap-4 w-full h-full">
+        <app-line-chart
+          [transactions]="incomeList"
+          label="Income Over Time"
+          [fillGradient]="incomeFillGradient"
+          [lineGradient]="incomeLineGradient"
+          bgColor="bg-emerald-100 border-2 border-emerald-700"
+          txtColor="text-emerald-900"
+          class="box-border flex w-full"
+        ></app-line-chart>
+
+        <app-line-chart
+          [transactions]="expenseList"
+          label="Expense Over Time"
+          [isInverted]="true"
+          [fillGradient]="expenseFillGradient"
+          [lineGradient]="expenseLineGradient"
+          bgColor="bg-rose-100 border-2 border-rose-700"
+          txtColor="text-rose-900"
+          class="box-border flex w-full"
+        ></app-line-chart>
+      </div>
+    </div>
   </div>
 </div>

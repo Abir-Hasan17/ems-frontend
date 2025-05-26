@@ -7,7 +7,12 @@ export interface trx {
   type: trxType;
 }
 
-export interface BalancePoint {
+export interface DataPoint {
   date: string;
-  balance: number;
+  data: number;
+}
+
+export interface Gradient {
+  top: string;
+  bottom: string;
 }

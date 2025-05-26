@@ -1,31 +1,44 @@
-import { Component, Input, ViewChild } from '@angular/core';
-import { trxType } from '../../models/enumerators';
-import { BalancePoint, trx } from '../../models/interfaces';
-
 import { CommonModule } from '@angular/common';
+import { Component, Input, ViewChild } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartOptions } from 'chart.js';
+import { DataPoint, Gradient, trx } from '../../models/interfaces';
 import { trxDummy } from '../../models/dummy-data';
+import { ChartConfiguration, ChartOptions } from 'chart.js';
+import { trxType } from '../../models/enumerators';
 
 @Component({
-  selector: 'app-balance-line-chart',
+  selector: 'app-line-chart',
   imports: [CommonModule, BaseChartDirective],
-  templateUrl: './balance-line-chart.component.html',
-  styleUrl: './balance-line-chart.component.css',
+  templateUrl: './line-chart.component.html',
+  styleUrl: './line-chart.component.css',
 })
-export class BalanceLineChartComponent {
-  @Input() transactions: trx[] = [];
-  balnceTimeline = this.getBalanceOverTime(trxDummy).map(
-    (point) => point.balance
-  );
-  dateLabel = this.getBalanceOverTime(trxDummy).map((point) => point.date);
+export class LineChartComponent {
+  @Input() label!: string;
+  @Input() transactions!: trx[];
+  @Input() isInverted = false;
+  @Input() fillGradient: Gradient = {
+    top: 'rgba(39, 138, 207, 0.3)',
+    bottom: 'rgba(18, 127, 202, 0.1)',
+  };
+
+  @Input() lineGradient: Gradient = {
+    top: 'rgba(39, 138, 207, 0.5)',
+    bottom: 'rgba(18, 127, 202, 0.3)',
+  };
+
+  @Input() gridColor = 'rgba(33, 33, 33, 0.75)';
+  @Input() bgColor = 'bg-violet-100';
+  @Input() txtColor = 'text-violet-900';
+
+  dataTimeline: number[] = [];
+  dateLabel: string[] = [];
 
   public lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: this.dateLabel,
     datasets: [
       {
-        data: this.balnceTimeline,
-        label: 'Balance Over Time',
+        data: this.dataTimeline,
+        label: this.label,
         fill: true,
         tension: 0.5,
         borderColor: 'black',
@@ -62,7 +75,7 @@ export class BalanceLineChartComponent {
         },
         grid: {
           display: true,
-          color: 'rgba(0, 69, 71, 0.68)', // Light teal grid lines
+          color: this.gridColor, // Light teal grid lines
           lineWidth: (ctx) => {
             // Hide bottom grid line (i.e., the last tick line)
             return ctx.index === 0 ? 0 : 1;
@@ -77,7 +90,30 @@ export class BalanceLineChartComponent {
 
   public lineChartLegend = false;
 
-  ngOnChanges(): void {}
+  ngOnChanges(): void {
+    this.dataTimeline = this.getDataOverTime(this.transactions).map(
+      (point) => point.data
+    );
+    this.dateLabel = this.getDataOverTime(this.transactions).map(
+      (point) => point.date
+    );
+
+    this.lineChartData = {
+      labels: this.dateLabel,
+      datasets: [
+        {
+          data: this.dataTimeline,
+          label: this.label,
+          fill: true,
+          tension: 0.5,
+          borderColor: 'black',
+          showLine: true,
+        },
+      ],
+    };
+
+    this.chart?.update();
+  }
 
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
@@ -95,8 +131,8 @@ export class BalanceLineChartComponent {
         0,
         chartArea.bottom
       );
-      gradientFill.addColorStop(0, 'rgba(0, 128, 128, 0.3)'); // Top: teal with some transparency
-      gradientFill.addColorStop(1, 'rgba(255, 0, 128, 0.1)'); // Bottom: rose (pinkish)
+      gradientFill.addColorStop(0, this.fillGradient.top); // Top: fill gradient
+      gradientFill.addColorStop(1, this.fillGradient.bottom); // Bottom: fill gradient
 
       const gradientLine = ctx.createLinearGradient(
         0,
@@ -104,8 +140,8 @@ export class BalanceLineChartComponent {
         0,
         chartArea.bottom
       );
-      gradientLine.addColorStop(0, 'teal'); // top
-      gradientLine.addColorStop(1, 'deeppink'); // bottom
+      gradientLine.addColorStop(0, this.lineGradient.top); // top
+      gradientLine.addColorStop(1, this.lineGradient.bottom); // bottom
 
       const dataset = this.lineChartData.datasets[0];
       dataset.backgroundColor = gradientFill;
@@ -115,19 +151,23 @@ export class BalanceLineChartComponent {
     }
   }
 
-  getBalanceOverTime(trxList: trx[]): BalancePoint[] {
+  getDataOverTime(trxList: trx[]): DataPoint[] {
     const sorted = [...trxList].sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
 
-    let balance = 0;
-    const result: BalancePoint[] = [];
+    let data = 0;
+    const result: DataPoint[] = [];
 
     sorted.forEach((trx) => {
-      balance += trx.type === trxType.income ? trx.amount : -trx.amount;
-      result.push({ date: trx.date, balance });
+      if (this.isInverted) {
+        data += Math.abs(trx.amount);
+      } else {
+        data += trx.type === trxType.income ? trx.amount : -trx.amount;
+      }
+      result.push({ date: trx.date, data: data });
     });
-
+    console.log(result);
     return result;
   }
 }
