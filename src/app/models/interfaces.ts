@@ -6,3 +6,8 @@ export interface trx {
   date: string;
   type: trxType;
 }
+
+export interface BalancePoint {
+  date: string;
+  balance: number;
+}

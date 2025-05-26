@@ -2,7 +2,11 @@
   <app-sidebar></app-sidebar>
 
   <!-- balance -->
-  <div class="inline-flex flex-col rounded-xl h-full box-border">
+  <div class="flex flex-row rounded-xl h-full w-full box-border">
     <app-balance-report class="h-full p-2 box-border"></app-balance-report>
+    <app-balance-line-chart
+      [transactions]="trxList"
+      class="box-border flex p-2 h-full w-full"
+    ></app-balance-line-chart>
   </div>
 </div>
