@@ -1,7 +1,10 @@
-<div class="flex flex-row bg-sky-50 h-full">
-  <app-sidebar></app-sidebar>
-
-  <!-- balance -->
+<!-- balance -->
+<div class="flex flex-col w-full h-full">
+  <app-top-bar
+    pageTitle="Home"
+    pageIcon="house.svg"
+    pageQuote="Knowing your expense is Knowing how to get rich"
+  ></app-top-bar>
   <div class="flex flex-row rounded-xl h-full w-full box-border">
     <app-balance-report class="h-full p-4 box-border"></app-balance-report>
     <div class="flex flex-col box-border gap-4 p-4 w-full h-full">

@@ -5,10 +5,16 @@ import { trxDummy } from '../../models/dummy-data';
 import { LineChartComponent } from '../../shared/line-chart/line-chart.component';
 import { trxType } from '../../models/enumerators';
 import { Gradient } from '../../models/interfaces';
+import { TopBarComponent } from '../../shared/top-bar/top-bar.component';
 
 @Component({
   selector: 'app-home',
-  imports: [SidebarComponent, BalanceReportComponent, LineChartComponent],
+  imports: [
+    SidebarComponent,
+    BalanceReportComponent,
+    LineChartComponent,
+    TopBarComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
