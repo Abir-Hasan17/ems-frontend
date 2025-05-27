@@ -9,7 +9,7 @@ import { SidebarNavElimentComponent } from '../sidebar-nav-eliment/sidebar-nav-e
 })
 export class SidebarComponent {
   navItems = [
-    { navLabel: 'Home', navRoute: 'home', navIcon: 'house.svg' },
+    { navLabel: 'Home', navRoute: '', navIcon: 'house.svg' },
     {
       navLabel: 'Incomes',
       navRoute: 'incomes',

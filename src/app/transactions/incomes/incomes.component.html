@@ -1,1 +1,127 @@
-<p>incomes works!</p>
+<div class="flex flex-col w-full h-screen overflow-hidden">
+  <app-top-bar
+    pageTitle="Incomes"
+    pageIcon="banknote-arrow-up.svg"
+    pageQuote="Money doesn't buy happiness, but it sure rents peace of mind."
+  ></app-top-bar>
+
+  <!-- Main content area -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Left side - Stats Cards -->
+    <div
+      class="flex flex-col border-r border-gray-100 p-4 justify-around h-full"
+    >
+      <div class="flex flex-row gap-4">
+        <!-- Total Income Card -->
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-emerald-50">
+          <div class="text-sm font-medium text-gray-500">Total Income</div>
+          <div class="text-2xl font-bold text-emerald-600 mt-1">
+            {{ getTotalIncome() + "$" }}
+          </div>
+          <div class="mt-2 text-xs text-gray-400 flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg>
+            All-time total
+          </div>
+        </div>
+
+        <!-- Number of Incomes Card -->
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-emerald-50">
+          <div class="text-sm font-medium text-gray-500">Transactions</div>
+          <div class="text-2xl font-bold text-emerald-600 mt-1">
+            {{ getIncomes().length }}
+          </div>
+          <div class="mt-2 text-xs text-gray-400 flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              />
+            </svg>
+            Income records
+          </div>
+        </div>
+
+        <!-- Highest Income Card -->
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-emerald-50">
+          <div class="text-sm font-medium text-gray-500">Highest Income</div>
+          <div class="text-2xl font-bold text-emerald-600 mt-1">
+            {{ getHighestIncome() + "$" }}
+          </div>
+          <div class="mt-2 text-xs text-gray-400 flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 10l7-7m0 0l7 7m-7-7v18"
+              />
+            </svg>
+            Single highest
+          </div>
+        </div>
+      </div>
+      <app-line-chart
+        [transactions]="getIncomes()"
+        label="Income Over Time"
+        [fillGradient]="incomeFillGradient"
+        [lineGradient]="incomeLineGradient"
+        bgColor="bg-emerald-100 border-2 border-emerald-700"
+        txtColor="text-emerald-900"
+        class="box-border flex w-full"
+      ></app-line-chart>
+    </div>
+
+    <!-- Right side - Income History -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <div class="text-xl font-medium pt-2 px-4 text-emerald-700 text-end">
+        Income History
+      </div>
+
+      <!-- Scrollable container -->
+      <div class="flex-1 overflow-y-auto relative px-4 scrollbar-hide">
+        <!-- Top fade effect -->
+        <div
+          class="sticky top-0 h-8 w-full bg-gradient-to-b from-sky-50 to-transparent pointer-events-none z-10"
+        ></div>
+
+        <div class="flex flex-col gap-2 pb-4">
+          @for (item of getIncomes(); track $index) {
+          <app-transaction-card [transaction]="item"></app-transaction-card>
+          }
+        </div>
+
+        <!-- Bottom fade effect -->
+        <div
+          class="sticky bottom-0 h-8 w-full bg-gradient-to-t from-sky-50 to-transparent pointer-events-none z-10"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>

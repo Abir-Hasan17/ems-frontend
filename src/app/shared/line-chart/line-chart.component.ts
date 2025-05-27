@@ -86,6 +86,13 @@ export class LineChartComponent {
         },
       },
     },
+    hover: {
+      intersect: false,
+    },
+    animation: {
+      duration: 1000, // Disable animation
+    },
+    events: [],
   };
 
   public lineChartLegend = false;

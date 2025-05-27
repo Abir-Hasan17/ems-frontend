@@ -1,1 +1,128 @@
-<p>expenses works!</p>
+<div class="flex flex-col w-full h-screen overflow-hidden">
+  <app-top-bar
+    pageTitle="Expenses"
+    pageIcon="banknote-arrow-down.svg"
+    pageQuote="Beware of little expenses—a small leak will sink a great ship."
+  ></app-top-bar>
+
+  <!-- Main content area -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Left side - Stats Cards -->
+    <div
+      class="flex flex-col border-r border-gray-100 p-4 justify-around h-full"
+    >
+      <div class="flex flex-row gap-4">
+        <!-- Total Expenses Card -->
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-rose-50">
+          <div class="text-sm font-medium text-gray-500">Total Expenses</div>
+          <div class="text-2xl font-bold text-rose-600 mt-1">
+            {{ getTotalExpenses() + "$" }}
+          </div>
+          <div class="mt-2 text-xs text-gray-400 flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+              />
+            </svg>
+            All-time total
+          </div>
+        </div>
+
+        <!-- Number of Expenses Card -->
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-rose-50">
+          <div class="text-sm font-medium text-gray-500">Transactions</div>
+          <div class="text-2xl font-bold text-rose-600 mt-1">
+            {{ getExpenses().length }}
+          </div>
+          <div class="mt-2 text-xs text-gray-400 flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              />
+            </svg>
+            Expense records
+          </div>
+        </div>
+
+        <!-- Highest Expense Card -->
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-rose-50">
+          <div class="text-sm font-medium text-gray-500">Highest Expense</div>
+          <div class="text-2xl font-bold text-rose-600 mt-1">
+            {{ getHighestExpense() + "$" }}
+          </div>
+          <div class="mt-2 text-xs text-gray-400 flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 14l-7 7m0 0l-7-7m7 7V3"
+              />
+            </svg>
+            Single highest
+          </div>
+        </div>
+      </div>
+      <app-line-chart
+        [transactions]="getExpenses()"
+        [isInverted]="true"
+        label="Expenses Over Time"
+        [fillGradient]="expenseFillGradient"
+        [lineGradient]="expenseLineGradient"
+        bgColor="bg-rose-100 border-2 border-rose-700"
+        txtColor="text-rose-900"
+        class="box-border flex w-full"
+      ></app-line-chart>
+    </div>
+
+    <!-- Right side - Expense History -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <div class="text-xl font-medium pt-2 px-5 text-rose-700 text-end">
+        Expense History
+      </div>
+
+      <!-- Scrollable container -->
+      <div class="flex-1 overflow-y-auto relative px-4 scrollbar-hide">
+        <!-- Top fade effect -->
+        <div
+          class="sticky top-0 h-8 w-full bg-gradient-to-b from-sky-50 to-transparent pointer-events-none z-10"
+        ></div>
+
+        <div class="flex flex-col gap-2 pb-4">
+          @for (item of getExpenses(); track $index) {
+          <app-transaction-card [transaction]="item"></app-transaction-card>
+          }
+        </div>
+
+        <!-- Bottom fade effect -->
+        <div
+          class="sticky bottom-0 h-8 w-full bg-gradient-to-t from-sky-50 to-transparent pointer-events-none z-10"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>

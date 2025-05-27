@@ -9,6 +9,16 @@
   box-sizing: border-box;
 } */
 
+.mat-mdc-dialog-container {
+  @apply p-0;
+}
+.mdc-notched-outline__notch {
+  border-style: none;
+}
+.mat-mdc-icon-button {
+  line-height: normal;
+}
+
 html,
 body {
   height: 100%;
@@ -31,4 +41,13 @@ body {
   to {
     transform: rotate(360deg);
   }
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

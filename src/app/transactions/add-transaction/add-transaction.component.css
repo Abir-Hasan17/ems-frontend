@@ -1,0 +1,5 @@
+::ng-deep .mat-form-field-appearance-outline.mat-form-field {
+  --mdc-outlined-text-field-outline-color: #0369a1; /* Tailwind sky-700 */
+  --mdc-outlined-text-field-hover-outline-color: #0284c7; /* Tailwind sky-600 */
+  --mdc-outlined-text-field-focus-outline-color: #0ea5e9; /* Tailwind sky-500 */
+}

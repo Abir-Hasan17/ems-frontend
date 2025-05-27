@@ -1,9 +1,10 @@
-import { Component, forwardRef, Input, input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-input',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './input.component.html',
   styleUrl: './input.component.css',
   providers: [
@@ -18,6 +19,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class InputComponent implements ControlValueAccessor {
   @Input() label = '';
   @Input() type = '';
+  @Input() design = 'bg-white';
   value = '';
 
   onChange = (value: any) => {};
