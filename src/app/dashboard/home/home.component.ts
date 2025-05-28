@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { BalanceReportComponent } from '../../shared/balance-report/balance-report.component';
 import { trxDummy } from '../../models/dummy-data';
@@ -6,19 +6,18 @@ import { LineChartComponent } from '../../shared/line-chart/line-chart.component
 import { trxType } from '../../models/enumerators';
 import { Gradient } from '../../models/interfaces';
 import { TopBarComponent } from '../../shared/top-bar/top-bar.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
-  imports: [
-    SidebarComponent,
-    BalanceReportComponent,
-    LineChartComponent,
-    TopBarComponent,
-  ],
+  imports: [BalanceReportComponent, LineChartComponent, TopBarComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
+  authServices = inject(AuthService);
+  userId?: string;
+
   trxList = trxDummy;
   trxFillGradient: Gradient = {
     top: 'rgba(0, 128, 128, 0.3)',
@@ -48,4 +47,16 @@ export class HomeComponent {
     top: 'rgba(139, 0, 56, 0.8)',
     bottom: 'rgba(139, 0, 56, 0.5)',
   };
+
+  ngOnInit() {
+    this.authServices.getUserId().subscribe((userId) => {
+      if (userId) {
+        this.userId = userId;
+        console.log('User ID:', userId);
+      } else {
+        // Not authenticated
+        console.error('User is not authenticated');
+      }
+    });
+  }
 }

@@ -7,6 +7,7 @@ import {
 } from '../models/auth';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
+import { catchError, map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -38,5 +39,18 @@ export class AuthService {
   logout() {
     const url = `${environment.apiUrl}/auth/logout`;
     return this.http.post(url, {}, { withCredentials: true });
+  }
+
+  getUserId() {
+    return this.checkAuthStatus().pipe(
+      map((res) => {
+        console.log('Auth status:', res);
+        return res.isAuthenticated ? res.userId : undefined;
+      }),
+      catchError((error) => {
+        console.error('Auth check failed:', error);
+        return of(undefined);
+      })
+    );
   }
 }

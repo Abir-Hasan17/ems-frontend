@@ -3,7 +3,7 @@ import { InputComponent } from '../../shared/input/input.component';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormGroup, FormControl } from '@angular/forms';
 import { loginButtonState } from '../../models/enumerators';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import {
   login_request,
@@ -39,6 +39,7 @@ export class RegisterComponent {
   });
 
   authService = inject(AuthService);
+  router = inject(Router);
   registerResponse: register_response | undefined;
 
   register() {
@@ -66,6 +67,7 @@ export class RegisterComponent {
         console.log(response);
         this.registerResponse = response;
         this.buttonState = loginButtonState.active;
+        this.router.navigate(['/home']);
       });
 
     console.log(this.registerResponse);
