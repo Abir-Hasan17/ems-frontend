@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { catchError } from 'rxjs';
 import { login_request, login_response } from '../../models/auth';
 import { loginButtonState } from '../../models/enumerators';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +27,7 @@ import { RouterModule } from '@angular/router';
 })
 export class LoginComponent {
   authService = inject(AuthService);
+  router = inject(Router);
   loginResponse: login_response | undefined;
   buttonState = loginButtonState.active;
   loginButtonState = loginButtonState;
@@ -68,6 +69,7 @@ export class LoginComponent {
         console.log(response);
         this.loginResponse = response;
         this.buttonState = loginButtonState.active;
+        this.router.navigate(['/home']);
       });
 
     console.log(this.loginResponse);

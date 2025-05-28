@@ -7,11 +7,12 @@ import { RootComponent } from './dashboard/root/root.component';
 import { IncomesComponent } from './transactions/incomes/incomes.component';
 import { ExpensesComponent } from './transactions/expenses/expenses.component';
 import { AuthCheckCookiesGuard } from './guards/auth-check-cookies.guard';
+import { LoginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
-  { path: '', component: LandingComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: '', component: LandingComponent, canActivate: [LoginGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [LoginGuard] },
   {
     path: 'home',
     component: RootComponent,
@@ -23,4 +24,5 @@ export const routes: Routes = [
       { path: 'expenses', component: ExpensesComponent },
     ],
   },
+  { path: '**', redirectTo: '' },
 ];

@@ -13,7 +13,7 @@ import { catchError, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthCheckCookiesGuard implements CanActivate {
+export class LoginGuard implements CanActivate {
   authService = inject(AuthService);
   router = inject(Router);
 
@@ -21,17 +21,17 @@ export class AuthCheckCookiesGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> {
-    console.log('AuthCheckCookiesGuard activated');
+    console.log('LoginGuard activated');
     return this.authService.checkAuthStatus().pipe(
       map((res) => {
         console.log('Auth status:', res);
         if (res.isAuthenticated) {
-          return true;
+          return this.router.createUrlTree(['/home']);
         } else {
-          return this.router.createUrlTree(['/login']); // Redirect to login
+          return false; // Redirect to login
         }
       }),
-      catchError(() => of(this.router.createUrlTree(['/login'])))
+      catchError(() => of(true))
     );
   }
 }

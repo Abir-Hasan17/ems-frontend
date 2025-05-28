@@ -34,6 +34,9 @@ export class AuthService {
       withCredentials: true,
     });
   }
-  // signUp(signUpRequest: )
-  constructor() {}
+
+  logout() {
+    const url = `${environment.apiUrl}/auth/logout`;
+    return this.http.post(url, {}, { withCredentials: true });
+  }
 }
