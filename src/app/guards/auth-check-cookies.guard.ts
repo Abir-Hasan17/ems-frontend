@@ -1,35 +1,36 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import {
+  CanActivate,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  UrlTree,
+  Router,
+} from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { AuthService } from '../services/auth.service';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthCheckCookiesGuard implements CanActivate {
-  constructor(private router: Router) {}
+  authService = inject(AuthService);
+  router = inject(Router);
 
-  canActivate(): boolean {
-    const authToken = this.getCookie('token');
-    console.log('Auth token from cookies:', authToken);
-
-    if (authToken) {
-      return true;
-    } else {
-      this.router.navigate(['/login']);
-      return false;
-    }
-  }
-
-  private getCookie(name: string): string | null {
-    const nameEQ = name + '=';
-    const cookies = document.cookie.split(';');
-
-    for (let cookie of cookies) {
-      while (cookie.charAt(0) === ' ') cookie = cookie.substring(1);
-      if (cookie.indexOf(nameEQ) === 0) {
-        return cookie.substring(nameEQ.length, cookie.length);
-      }
-    }
-
-    return null;
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> {
+    return this.authService.checkAuthStatus().pipe(
+      map((res) => {
+        console.log('Auth status:', res);
+        if (res.isAuthenticated) {
+          return true;
+        } else {
+          return this.router.createUrlTree(['/login']); // Redirect to login
+        }
+      }),
+      catchError(() => of(this.router.createUrlTree(['/login'])))
+    );
   }
 }

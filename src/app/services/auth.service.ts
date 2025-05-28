@@ -27,6 +27,13 @@ export class AuthService {
       withCredentials: true,
     });
   }
+
+  checkAuthStatus() {
+    const url = `${environment.apiUrl}/auth/status`;
+    return this.http.get<{ isAuthenticated: boolean; userId?: string }>(url, {
+      withCredentials: true,
+    });
+  }
   // signUp(signUpRequest: )
   constructor() {}
 }
