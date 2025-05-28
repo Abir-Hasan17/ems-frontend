@@ -18,6 +18,11 @@
   </button>
 
   <app-modal [isOpen]="showAddModal" (close)="closeModal()">
-    <app-add-transaction (close)="closeModal()"></app-add-transaction>
+    <app-add-update-transaction
+      (close)="closeModal()"
+      (save)="onSave($event)"
+      title="Add Transaction"
+      icon="plus.svg"
+    ></app-add-update-transaction>
   </app-modal>
 </div>

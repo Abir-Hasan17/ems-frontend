@@ -1,5 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { login_Request, login_Response } from '../models/auth';
+import {
+  login_request,
+  login_response,
+  register_request,
+  register_response,
+} from '../models/auth';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 
@@ -8,13 +13,20 @@ import { environment } from '../../environments/environment.development';
 })
 export class AuthService {
   http = inject(HttpClient);
-  url = `${environment.apiUrl}/auth/login`;
-  login(loginRequest: login_Request) {
-    return this.http.post<login_Response>(this.url, loginRequest, {
+
+  login(loginRequest: login_request) {
+    const url = `${environment.apiUrl}/auth/login`;
+    return this.http.post<login_response>(url, loginRequest, {
       withCredentials: true,
     });
   }
 
+  register(register_request: register_request) {
+    const url = `${environment.apiUrl}/auth/register`;
+    return this.http.post<register_response>(url, register_request, {
+      withCredentials: true,
+    });
+  }
   // signUp(signUpRequest: )
   constructor() {}
 }

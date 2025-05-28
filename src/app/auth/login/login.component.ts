@@ -7,7 +7,7 @@ import { InputComponent } from '../../shared/input/input.component';
 import { FormGroup, FormControl } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { catchError } from 'rxjs';
-import { login_Request, login_Response } from '../../models/auth';
+import { login_request, login_response } from '../../models/auth';
 import { loginButtonState } from '../../models/enumerators';
 import { RouterModule } from '@angular/router';
 
@@ -27,7 +27,7 @@ import { RouterModule } from '@angular/router';
 })
 export class LoginComponent {
   authService = inject(AuthService);
-  loginResponse: login_Response | undefined;
+  loginResponse: login_response | undefined;
   buttonState = loginButtonState.active;
   loginButtonState = loginButtonState;
 
@@ -48,7 +48,7 @@ export class LoginComponent {
     const res = this.authService.login;
     console.log(res);
 
-    const loginRequest: login_Request = {
+    const loginRequest: login_request = {
       email: this.form.value.email ?? '',
       password: this.form.value.password ?? '',
     };

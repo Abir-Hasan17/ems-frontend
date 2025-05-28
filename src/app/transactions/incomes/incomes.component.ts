@@ -5,10 +5,18 @@ import { trxType } from '../../models/enumerators';
 import { Gradient, trx } from '../../models/interfaces';
 import { TransactionCardComponent } from '../../shared/transaction-card/transaction-card.component';
 import { LineChartComponent } from '../../shared/line-chart/line-chart.component';
+import { HighestIncomeCardComponent } from '../../shared/highest-income-card/highest-income-card.component';
+import { TotalIncomeCardComponent } from '../../shared/total-income-card/total-income-card.component';
 
 @Component({
   selector: 'app-incomes',
-  imports: [TopBarComponent, TransactionCardComponent, LineChartComponent],
+  imports: [
+    TopBarComponent,
+    TransactionCardComponent,
+    LineChartComponent,
+    HighestIncomeCardComponent,
+    TotalIncomeCardComponent,
+  ],
   templateUrl: './incomes.component.html',
   styleUrl: './incomes.component.css',
 })
@@ -22,15 +30,6 @@ export class IncomesComponent {
     bottom: 'rgba(0, 139, 103, 0.5)',
   };
 
-  getTotalIncome(): any {
-    return this.getIncomes().reduce((sum, income) => sum + income.amount, 0);
-  }
-  getHighestIncome(): any {
-    const incomes = this.getIncomes();
-    return incomes.length > 0
-      ? Math.max(...incomes.map((income) => income.amount))
-      : 0;
-  }
   trx = trxDummy[0];
   getIncomes() {
     return trxDummy.filter((trx) => trx.type == trxType.income);

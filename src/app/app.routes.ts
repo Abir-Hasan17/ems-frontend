@@ -6,6 +6,7 @@ import { HomeComponent } from './dashboard/home/home.component';
 import { RootComponent } from './dashboard/root/root.component';
 import { IncomesComponent } from './transactions/incomes/incomes.component';
 import { ExpensesComponent } from './transactions/expenses/expenses.component';
+import { AuthCheckCookiesGuard } from './guards/auth-check-cookies.guard';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -14,6 +15,8 @@ export const routes: Routes = [
   {
     path: 'home',
     component: RootComponent,
+    canActivate: [AuthCheckCookiesGuard],
+
     children: [
       { path: '', component: HomeComponent },
       { path: 'incomes', component: IncomesComponent },

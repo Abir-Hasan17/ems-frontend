@@ -5,10 +5,18 @@ import { TransactionCardComponent } from '../../shared/transaction-card/transact
 import { Gradient } from '../../models/interfaces';
 import { trxDummy } from '../../models/dummy-data';
 import { trxType } from '../../models/enumerators';
+import { HighestExpenseCardComponent } from '../../shared/highest-expense-card/highest-expense-card.component';
+import { TotalExpenseCardComponent } from '../../shared/total-expense-card/total-expense-card.component';
 
 @Component({
   selector: 'app-expenses',
-  imports: [TopBarComponent, LineChartComponent, TransactionCardComponent],
+  imports: [
+    TopBarComponent,
+    LineChartComponent,
+    TransactionCardComponent,
+    HighestExpenseCardComponent,
+    TotalExpenseCardComponent,
+  ],
   templateUrl: './expenses.component.html',
   styleUrl: './expenses.component.css',
 })
@@ -22,16 +30,7 @@ export class ExpensesComponent {
     bottom: 'rgba(139, 0, 56, 0.5)',
   };
 
-  getHighestExpense() {
-    return this.getExpenses().reduce((sum, expense) => sum + expense.amount, 0);
-  }
   getExpenses() {
     return trxDummy.filter((trx) => trx.type == trxType.expense);
-  }
-  getTotalExpenses() {
-    const expenses = this.getExpenses();
-    return expenses.length > 0
-      ? Math.max(...expenses.map((expense) => expense.amount))
-      : 0;
   }
 }

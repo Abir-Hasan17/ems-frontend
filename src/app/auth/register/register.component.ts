@@ -1,9 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { InputComponent } from '../../shared/input/input.component';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormGroup, FormControl } from '@angular/forms';
 import { loginButtonState } from '../../models/enumerators';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import {
+  login_request,
+  login_response,
+  register_request,
+  register_response,
+} from '../../models/auth';
+import { catchError } from 'rxjs/internal/operators/catchError';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +25,7 @@ export class RegisterComponent {
   loginButtonState = loginButtonState;
 
   onSubmit() {
-    throw new Error('Method not implemented.');
+    this.register();
   }
 
   form = new FormGroup({
@@ -29,4 +37,37 @@ export class RegisterComponent {
       Validators.minLength(8),
     ]),
   });
+
+  authService = inject(AuthService);
+  registerResponse: register_response | undefined;
+
+  register() {
+    this.buttonState = loginButtonState.loading;
+
+    const register_request: register_request = {
+      email: this.form.value.email ?? '',
+      password: this.form.value.password ?? '',
+      firstName: this.form.value.f_name ?? '',
+      lastName: this.form.value.l_name ?? '',
+    };
+    console.log(register_request);
+    this.authService
+      .register(register_request)
+      .pipe(
+        catchError((err) => {
+          this.buttonState = loginButtonState.active;
+          console.log(this.buttonState);
+          console.log(err);
+          throw err;
+        })
+      )
+      .subscribe((response) => {
+        console.log('Server Response: ');
+        console.log(response);
+        this.registerResponse = response;
+        this.buttonState = loginButtonState.active;
+      });
+
+    console.log(this.registerResponse);
+  }
 }

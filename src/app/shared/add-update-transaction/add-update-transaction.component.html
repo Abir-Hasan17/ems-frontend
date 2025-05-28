@@ -1,0 +1,90 @@
+<div class="flex flex-col w-full h-full p-2 pe-4 gap-2">
+  <div class="text-2xl font-medium text-sky-900">{{ title }}</div>
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    class="bg-inherit flex flex-col gap-4"
+  >
+    <div class="inline-flex flex-col w-full">
+      <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput placeholder="" formControlName="label" required />
+        @if (form.get('label')?.touched && form.get('label')?.invalid) {
+        <mat-error>Title is required</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="flex flex-row gap-2">
+      <mat-form-field appearance="outline">
+        <mat-label>Amount</mat-label>
+        <input
+          matInput
+          placeholder=""
+          formControlName="amount"
+          required
+          type="number"
+        />
+        @if (form.get('amount')?.touched && form.get('amount')?.invalid) {
+        <mat-error>Title is required</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Type Toggle -->
+      <div class="flex flex-row items-center h-full">
+        <label
+          class="cursor-pointer px-4 py-2 rounded-l-md text-white text-sm font-semibold"
+          [class.bg-emerald-700]="form.get('type')?.value === trxType.income"
+          [class.bg-gray-400]="form.get('type')?.value !== trxType.income"
+          (click)="form.get('type')?.setValue(trxType.income)"
+        >
+          Income
+        </label>
+
+        <label
+          class="cursor-pointer px-4 py-2 rounded-r-md text-white text-sm font-semibold"
+          [class.bg-rose-700]="form.get('type')?.value === trxType.expense"
+          [class.bg-gray-400]="form.get('type')?.value !== trxType.expense"
+          (click)="form.get('type')?.setValue(trxType.expense)"
+        >
+          Expense
+        </label>
+      </div>
+    </div>
+
+    <div class="w-full">
+      <mat-form-field class="w-full p-0 m-0" appearance="outline">
+        <mat-label>Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="date"
+          class="bg-sky-100"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Note</mat-label>
+      <textarea
+        matInput
+        placeholder=""
+        formControlName="note"
+        type="text"
+      ></textarea>
+    </mat-form-field>
+
+    <button
+      type="submit"
+      [disabled]="form.invalid && form.touched"
+      class="flex flex-row w-full items-center justify-between gap-1 border-0 rounded-xl box-border p-2 bg-violet-800 text-white pe-4 transition duration-150 ease-in-out active:scale-95"
+    >
+      <div class="flex flex-row p-2">
+        <img src="assets/plus-white.svg" alt="" />
+        {{ title }}
+      </div>
+    </button>
+  </form>
+</div>

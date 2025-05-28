@@ -1,41 +1,69 @@
 <div
-  class="flex flex-col p-4 rounded-xl shadow-md border-0 min-w-120"
+  class="flex flex-col p-4 rounded-xl shadow-md border-0 min-w-120 relative"
   [ngClass]="{
     'border-emerald-500 bg-emerald-100': isIncome,
     'border-rose-500 bg-rose-100': !isIncome
   }"
 >
-  <div class="flex justify-between items-center mb-2">
-    <div class="text-lg font-semibold text-gray-800">
-      {{ transaction.label }}
+  <!-- Original Content -->
+  <div class="flex flex-row justify-between">
+    <div class="flex flex-col mb-2">
+      <div class="text-lg font-semibold text-gray-800">
+        {{ transaction.label }}
+      </div>
+
+      <div class="text-sm text-gray-600 mb-1">
+        <span class="font-medium">Date:</span> {{ transaction.date }}
+      </div>
+
+      <div class="text-sm text-gray-600 mb-1 break-words">
+        <span class="font-medium">Note:</span>
+        <span
+          *ngIf="transaction.note; else noNote"
+          class="whitespace-normal break-words"
+        >
+          {{ transaction.note }}
+        </span>
+        <ng-template #noNote><i class="text-gray-400">No note</i></ng-template>
+      </div>
     </div>
-    <div
-      class="text-xl font-bold"
-      [ngClass]="{
-        'text-emerald-600': isIncome,
-        'text-rose-600': !isIncome
-      }"
-    >
-      {{ transaction.amount }}$
+
+    <div class="flex flex-col text-right items-end justify-baseline">
+      <!-- Action Buttons -->
+      <div class="flex gap-1">
+        <!-- Edit Button -->
+        <app-edit-button
+          [isIncome]="isIncome"
+          (clicked)="openModal()"
+        ></app-edit-button>
+
+        <!-- Delete Button -->
+        <app-delete-button
+          [isIncome]="isIncome"
+          (clicked)="onDelete()"
+        ></app-delete-button>
+      </div>
+      <div
+        class="text-xl font-bold"
+        [ngClass]="{
+          'text-emerald-600': isIncome,
+          'text-rose-600': !isIncome
+        }"
+      >
+        {{ transaction.amount }}$
+      </div>
+      <div class="text-xs text-right text-gray-400 mt-2">
+        Recorded on {{ transaction.realDate | date : "medium" }}
+      </div>
     </div>
   </div>
-
-  <div class="text-sm text-gray-600 mb-1">
-    <span class="font-medium">Date:</span> {{ transaction.date }}
-  </div>
-
-  <div class="text-sm text-gray-600 mb-1 break-words">
-    <span class="font-medium">Note:</span>
-    <span
-      *ngIf="transaction.note; else noNote"
-      class="whitespace-normal break-words"
-    >
-      {{ transaction.note }}
-    </span>
-    <ng-template #noNote><i class="text-gray-400">No note</i></ng-template>
-  </div>
-
-  <div class="text-xs text-right text-gray-400 mt-2">
-    Recorded on {{ transaction.realDate | date : "medium" }}
-  </div>
+  <app-modal [isOpen]="showUpdateModal" (close)="closeModal()">
+    <app-add-update-transaction
+      (close)="closeModal()"
+      (save)="onSave($event)"
+      title="Update Transaction"
+      icon="plus.svg"
+      [trx]="transaction"
+    ></app-add-update-transaction>
+  </app-modal>
 </div>

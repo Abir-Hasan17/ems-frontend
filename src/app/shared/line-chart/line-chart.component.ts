@@ -41,7 +41,6 @@ export class LineChartComponent {
         label: this.label,
         fill: true,
         tension: 0.5,
-        borderColor: 'black',
         showLine: true,
       },
     ],
@@ -90,7 +89,7 @@ export class LineChartComponent {
       intersect: false,
     },
     animation: {
-      duration: 1000, // Disable animation
+      duration: 0, // Disable animation
     },
     events: [],
   };
@@ -113,7 +112,6 @@ export class LineChartComponent {
           label: this.label,
           fill: true,
           tension: 0.5,
-          borderColor: 'black',
           showLine: true,
         },
       ],

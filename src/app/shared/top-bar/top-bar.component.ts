@@ -2,10 +2,17 @@ import { Component, Input } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
 import { InputComponent } from '../input/input.component';
 import { AddTransactionComponent } from '../../transactions/add-transaction/add-transaction.component';
+import { AddUpdateTransactionComponent } from '../add-update-transaction/add-update-transaction.component';
+import { trx } from '../../models/interfaces';
 
 @Component({
   selector: 'app-top-bar',
-  imports: [ModalComponent, InputComponent, AddTransactionComponent],
+  imports: [
+    ModalComponent,
+    InputComponent,
+    AddTransactionComponent,
+    AddUpdateTransactionComponent,
+  ],
   templateUrl: './top-bar.component.html',
   styleUrl: './top-bar.component.css',
 })
@@ -23,5 +30,8 @@ export class TopBarComponent {
 
   closeModal() {
     this.showAddModal = false;
+  }
+  onSave(returnedTrx: trx) {
+    console.log(returnedTrx);
   }
 }

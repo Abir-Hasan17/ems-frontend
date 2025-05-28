@@ -3,12 +3,10 @@
     class="flex flex-row justify-between items-center min-h-32 bg-gradient-to-t from-violet-800 to-purple-800 border-2 border-violet-950 rounded-t-2xl px-6"
   >
     <div class="flex flex-row items-center">
-      <h2 class="text-xl font-medium text-violet-200 m-0">
-        Current<br />Balance
-      </h2>
+      <h2 class="text-xl font-medium text-white m-0">Current<br />Balance</h2>
       <div class="w-px h-24 bg-violet-200 mx-4"></div>
     </div>
-    <p class="text-3xl font-normal text-sky-200 m-0 w-full text-center">
+    <p class="text-3xl font-normal text-white m-0 w-full text-center">
       {{ currentBalance }}$
     </p>
   </div>
@@ -16,20 +14,12 @@
     class="flex flex-col h-full rounded-b-xl border-x-2 border-b-2 border-violet-950"
   >
     <div class="flex flex-row gap-2 text-center px-4 my-6">
-      <div
-        class="flex flex-col justify-center p-1 bg-teal-100 rounded-lg border border-teal-800 h-24 w-36"
-      >
-        <p class="text-sm text-gray-500 m-0">Total Income</p>
-        <hr class="w-full" />
-        <p class="text-lg font-medium text-teal-700 m-0">{{ totalIncome }}$</p>
-      </div>
-      <div
-        class="flex flex-col justify-center p-1 bg-rose-100 rounded-lg border border-rose-800 h-24 w-36"
-      >
-        <p class="text-sm text-gray-500 m-0">Total Expense</p>
-        <hr class="w-full" />
-        <p class="text-lg font-medium text-rose-700 m-0">{{ totalExpense }}$</p>
-      </div>
+      <app-total-income-card [incomes]="incomes"></app-total-income-card>
+      <app-highest-income-card [incomes]="incomes"></app-highest-income-card>
+      <app-total-expense-card [expenses]="expenses"></app-total-expense-card>
+      <app-highest-expense-card
+        [expenses]="expenses"
+      ></app-highest-expense-card>
     </div>
 
     <div class="mx-4">
