@@ -1,18 +1,26 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewChild,
+  AfterViewInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
-import { DataPoint, Gradient, trx } from '../../models/interfaces';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
+import { DataPoint, Gradient, trx } from '../../models/interfaces';
 import { trxType } from '../../models/enumerators';
 import { transaction } from '../../services/transaction.service';
 
 @Component({
   selector: 'app-line-chart',
+  standalone: true,
   imports: [CommonModule, BaseChartDirective],
   templateUrl: './line-chart.component.html',
-  styleUrl: './line-chart.component.css',
+  styleUrls: ['./line-chart.component.css'],
 })
-export class LineChartComponent {
+export class LineChartComponent implements OnChanges, AfterViewInit {
   @Input() label!: string;
   @Input() transactions!: transaction[];
   @Input() isInverted = false;
@@ -20,15 +28,15 @@ export class LineChartComponent {
     top: 'rgba(39, 138, 207, 0.3)',
     bottom: 'rgba(18, 127, 202, 0.1)',
   };
-
   @Input() lineGradient: Gradient = {
     top: 'rgba(39, 138, 207, 0.5)',
     bottom: 'rgba(18, 127, 202, 0.3)',
   };
-
   @Input() gridColor = 'rgba(33, 33, 33, 0.75)';
   @Input() bgColor = 'bg-violet-100';
   @Input() txtColor = 'text-violet-900';
+
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   dataTimeline: number[] = [];
   dateLabel: string[] = [];
@@ -50,38 +58,35 @@ export class LineChartComponent {
     responsive: true,
     plugins: {
       legend: {
-        display: false, // hide legend
+        display: false,
       },
       tooltip: {
-        enabled: false, // disable tooltips if needed
+        enabled: false,
       },
     },
     scales: {
       x: {
         ticks: {
-          display: false, // hide bottom (X-axis) labels
+          display: false,
         },
         grid: {
-          display: false, // hide grid lines for X-axis
+          display: false,
         },
         border: {
-          display: false, // hide axis line
+          display: false,
         },
       },
       y: {
         ticks: {
-          display: false, // hide side (Y-axis) labels
+          display: false,
         },
         grid: {
           display: true,
-          color: this.gridColor, // Light teal grid lines
-          lineWidth: (ctx) => {
-            // Hide bottom grid line (i.e., the last tick line)
-            return ctx.index === 0 ? 0 : 1;
-          },
+          color: this.gridColor,
+          lineWidth: (ctx) => (ctx.index === 0 ? 0 : 1),
         },
         border: {
-          display: false, // hide axis line
+          display: false,
         },
       },
     },
@@ -89,20 +94,19 @@ export class LineChartComponent {
       intersect: false,
     },
     animation: {
-      duration: 0, // Disable animation
+      duration: 1000,
     },
     events: [],
   };
 
   public lineChartLegend = false;
 
-  ngOnChanges(): void {
-    this.dataTimeline = this.getDataOverTime(this.transactions).map(
-      (point) => point.data
-    );
-    this.dateLabel = this.getDataOverTime(this.transactions).map(
-      (point) => point.date
-    );
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!this.transactions || this.transactions.length === 0) return;
+
+    const timeline = this.getDataOverTime(this.transactions);
+    this.dataTimeline = timeline.map((point) => point.data);
+    this.dateLabel = timeline.map((point) => point.date);
 
     this.lineChartData = {
       labels: this.dateLabel,
@@ -117,47 +121,51 @@ export class LineChartComponent {
       ],
     };
 
-    this.chart?.update();
+    setTimeout(() => {
+      this.applyGradients();
+      this.chart?.update();
+    }, 0);
   }
 
-  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
-
   ngAfterViewInit(): void {
-    if (this.chart && this.chart.chart) {
-      const ctx = this.chart.chart.ctx;
-      const chartArea = this.chart.chart.chartArea;
+    setTimeout(() => {
+      this.applyGradients();
+      this.chart?.update();
+    }, 0);
+  }
 
-      // Make sure chart area is available
-      if (!chartArea) return;
+  private applyGradients() {
+    if (!this.chart?.chart) return;
 
-      const gradientFill = ctx.createLinearGradient(
-        0,
-        chartArea.top,
-        0,
-        chartArea.bottom
-      );
-      gradientFill.addColorStop(0, this.fillGradient.top); // Top: fill gradient
-      gradientFill.addColorStop(1, this.fillGradient.bottom); // Bottom: fill gradient
+    const ctx = this.chart.chart.ctx;
+    const chartArea = this.chart.chart.chartArea;
 
-      const gradientLine = ctx.createLinearGradient(
-        0,
-        chartArea.top,
-        0,
-        chartArea.bottom
-      );
-      gradientLine.addColorStop(0, this.lineGradient.top); // top
-      gradientLine.addColorStop(1, this.lineGradient.bottom); // bottom
+    if (!chartArea) return;
 
-      const dataset = this.lineChartData.datasets[0];
-      dataset.backgroundColor = gradientFill;
-      dataset.borderColor = gradientLine;
+    const gradientFill = ctx.createLinearGradient(
+      0,
+      chartArea.top,
+      0,
+      chartArea.bottom
+    );
+    gradientFill.addColorStop(0, this.fillGradient.top);
+    gradientFill.addColorStop(1, this.fillGradient.bottom);
 
-      this.chart.update();
-    }
+    const gradientLine = ctx.createLinearGradient(
+      0,
+      chartArea.top,
+      0,
+      chartArea.bottom
+    );
+    gradientLine.addColorStop(0, this.lineGradient.top);
+    gradientLine.addColorStop(1, this.lineGradient.bottom);
+
+    const dataset = this.lineChartData.datasets[0];
+    dataset.backgroundColor = gradientFill;
+    dataset.borderColor = gradientLine;
   }
 
   getDataOverTime(trxList: transaction[]): DataPoint[] {
-    // Ensure dates are sorted in ascending order
     const sorted = [...trxList].sort(
       (a, b) =>
         new Date(a.transactionDate).getTime() -
@@ -167,22 +175,19 @@ export class LineChartComponent {
     let data = 0;
     const result: DataPoint[] = [];
 
-    sorted.forEach((trx) => {
-      // Invert logic (e.g., for expenses only)
+    for (const trx of sorted) {
       if (this.isInverted) {
         data += Math.abs(trx.amount);
       } else {
         data += trx.type === trxType.income ? trx.amount : -trx.amount;
       }
 
-      // Push ISO date string and cumulative data
       result.push({
         date: new Date(trx.transactionDate).toISOString(),
         data,
       });
-    });
+    }
 
-    console.log('data over time', result);
     return result;
   }
 }
