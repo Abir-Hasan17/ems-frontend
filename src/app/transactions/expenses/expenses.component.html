@@ -3,6 +3,7 @@
     pageTitle="Expenses"
     pageIcon="banknote-arrow-down.svg"
     pageQuote="Beware of little expenses—a small leak will sink a great ship."
+    (added)="fetchExpenses(userId!)"
   ></app-top-bar>
 
   <!-- Main content area -->
@@ -73,7 +74,11 @@
 
         <div class="flex flex-col gap-2 pb-4">
           @for (item of getExpenses(); track $index) {
-          <app-transaction-card [transaction]="item"></app-transaction-card>
+          <app-transaction-card
+            [transaction]="item"
+            (updated)="fetchExpenses(userId!)"
+            (deleted)="fetchExpenses(userId!)"
+          ></app-transaction-card>
           }
         </div>
 

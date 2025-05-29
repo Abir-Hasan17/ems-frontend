@@ -4,7 +4,6 @@ import { trxType } from '../../models/enumerators';
 import { Gradient, trx } from '../../models/interfaces';
 import { TransactionCardComponent } from '../../shared/transaction-card/transaction-card.component';
 import { LineChartComponent } from '../../shared/line-chart/line-chart.component';
-import { HighestIncomeCardComponent } from '../../shared/highest-income-card/highest-income-card.component';
 import { AuthService } from '../../services/auth.service';
 import {
   transaction,
@@ -57,7 +56,14 @@ export class ExpensesComponent {
   fetchExpenses(userId: string) {
     this.trxService.getTransactionsByUserId(userId).subscribe({
       next: (allTrx) => {
-        this.expenses = allTrx.filter((trx) => trx.type === trxType.expense);
+        this.expenses = allTrx
+          .filter((trx) => trx.type === trxType.expense)
+          .sort(
+            (a, b) =>
+              new Date(a.transactionDate).getTime() -
+              new Date(b.transactionDate).getTime()
+          )
+          .reverse();
         this.totalExpense = this.expenses.reduce(
           (sum, trx) => sum + trx.amount,
           0

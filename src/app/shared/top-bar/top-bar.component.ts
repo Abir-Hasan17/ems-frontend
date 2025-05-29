@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
 import { InputComponent } from '../input/input.component';
 import { AddTransactionComponent } from '../../transactions/add-transaction/add-transaction.component';
@@ -24,6 +24,7 @@ export class TopBarComponent {
   @Input() pageTitle = '';
   @Input() pageIcon = '';
   @Input() pageQuote = '';
+  @Output() added = new EventEmitter<void>();
   transactionService = inject(TransactionService);
 
   showAddModal = false;
@@ -39,7 +40,10 @@ export class TopBarComponent {
   onSave(returnedTrx: create_transaction_request) {
     console.log(returnedTrx);
     this.transactionService.createTransaction(returnedTrx).subscribe({
-      next: (res) => console.log('Transaction created:', res),
+      next: (res) => {
+        console.log('Transaction created:', res);
+        this.added.emit();
+      },
       error: (err) => console.error('Creation failed:', err),
     });
   }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { trxType } from '../../models/enumerators';
 import { EditButtonComponent } from '../edit-button/edit-button.component';
 import { DeleteButtonComponent } from '../delete-button/delete-button.component';
@@ -26,6 +26,8 @@ import {
 })
 export class TransactionCardComponent {
   @Input() transaction!: transaction;
+  @Output() updated = new EventEmitter<void>();
+  @Output() deleted = new EventEmitter<void>();
   get isIncome() {
     return this.transaction.type === trxType.income; // Adjust if trxType is an enum
   }
@@ -47,7 +49,10 @@ export class TransactionCardComponent {
     this.transactionService
       .updateTransaction(this.transaction._id, returnedTrx)
       .subscribe({
-        next: (res) => console.log('Transaction updated:', res),
+        next: (res) => {
+          console.log('Transaction updated:', res);
+          this.updated.emit();
+        },
         error: (err) => console.error('Update failed:', err),
       });
   }
@@ -58,7 +63,10 @@ export class TransactionCardComponent {
 
   delete(id: string) {
     this.transactionService.deleteTransaction(id).subscribe({
-      next: (res) => console.log('Transaction deleted:', res.message),
+      next: (res) => {
+        console.log('Transaction deleted:', res.message);
+        this.deleted.emit();
+      },
       error: (err) => console.error('Delete failed:', err),
     });
   }

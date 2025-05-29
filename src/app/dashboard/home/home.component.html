@@ -4,6 +4,7 @@
     pageTitle="Home"
     pageIcon="house.svg"
     pageQuote="Knowing your expense is Knowing how to get rich"
+    (added)="fetchTransactions(userId!)"
   ></app-top-bar>
   <div class="flex flex-row h-full w-full box-border">
     <app-balance-report class="h-full p-4 box-border"></app-balance-report>

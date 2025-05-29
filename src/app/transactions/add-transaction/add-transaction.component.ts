@@ -37,6 +37,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class AddTransactionComponent {
   @Output() close = new EventEmitter<void>();
+  @Output() added = new EventEmitter<void>();
+
   trxType = trxType;
   trx!: create_transaction_request;
   userId!: string;
@@ -73,7 +75,10 @@ export class AddTransactionComponent {
   }
   addTransaction(data: create_transaction_request) {
     this.transactionService.createTransaction(data).subscribe({
-      next: (res) => console.log('Transaction created:', res),
+      next: (res) => {
+        console.log('Transaction created:', res);
+        this.added.emit();
+      },
       error: (err) => console.error('Creation failed:', err),
     });
   }
