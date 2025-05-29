@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { trx } from '../../models/interfaces';
+import { transaction } from '../../services/transaction.service';
 
 @Component({
   selector: 'app-highest-income-card',
@@ -8,12 +9,5 @@ import { trx } from '../../models/interfaces';
   styleUrl: './highest-income-card.component.css',
 })
 export class HighestIncomeCardComponent {
-  @Input() incomes!: trx[];
-
-  getHighestIncome(): any {
-    const incomes = this.incomes;
-    return incomes.length > 0
-      ? Math.max(...incomes.map((income) => income.amount))
-      : 0;
-  }
+  @Input() highestIncome!: number;
 }

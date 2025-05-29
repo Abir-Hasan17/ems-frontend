@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  inject,
   Input,
   Output,
   SimpleChanges,
@@ -20,6 +21,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { trx } from '../../models/interfaces';
+import {
+  create_transaction_request,
+  transaction,
+} from '../../services/transaction.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-add-update-transaction',
@@ -36,20 +42,23 @@ import { trx } from '../../models/interfaces';
 })
 export class AddUpdateTransactionComponent {
   @Output() close = new EventEmitter<void>();
-  @Output() save = new EventEmitter<trx>();
+  @Output() save = new EventEmitter<create_transaction_request>();
 
   @Input() title!: string;
   @Input() icon!: string;
   trxType = trxType;
-  @Input() trx: trx = {
+  @Input() trx: create_transaction_request = {
+    userId: '',
     label: '',
     amount: 0,
-    realDate: new Date(),
-    date: '',
+    transactionDate: new Date(),
+    modificationDate: new Date(),
     type: trxType.income,
     note: '',
   };
   form: FormGroup;
+  authService = inject(AuthService);
+  userId!: string;
 
   constructor() {
     // Initialize empty form in constructor
@@ -71,12 +80,12 @@ export class AddUpdateTransactionComponent {
     }
   }
 
-  private updateForm(trx: trx) {
+  private updateForm(trx: create_transaction_request) {
     this.form.patchValue({
       label: trx.label,
       amount: trx.amount.toString(),
       type: trx.type,
-      date: trx.date ? new Date(trx.date) : new Date(),
+      date: trx.transactionDate ? new Date(trx.transactionDate) : new Date(),
       note: trx.note,
     });
   }
@@ -84,18 +93,31 @@ export class AddUpdateTransactionComponent {
   onSubmit() {
     console.log(this.trx);
     const formValue = this.form.value;
-    if (this.form.valid) {
-      const updatedTrx: trx = {
+    if (this.form.valid && this.userId) {
+      const updatedTrx: create_transaction_request = {
+        userId: this.userId, // assuming userId is available from authService
         label: formValue.label!,
-        amount: parseFloat(formValue.amount!),
-        realDate: new Date(),
-        date: formValue.date!.toISOString().split('T')[0],
+        amount: parseFloat(formValue.amount!), // convert from string if necessary
         type: formValue.type!,
-        note: formValue.note || '',
+        note: formValue.note || '', // fallback to empty string if null
+        transactionDate: formValue.date!,
+        modificationDate: new Date(),
       };
 
       this.save.emit(updatedTrx); // Emit to parent instead of modifying locally
       this.close.emit();
     }
+  }
+
+  ngOnInit() {
+    this.authService.getUserId().subscribe((userId) => {
+      if (userId) {
+        this.userId = userId;
+        console.log('User ID:', userId);
+      } else {
+        // Not authenticated
+        console.error('User is not authenticated');
+      }
+    });
   }
 }

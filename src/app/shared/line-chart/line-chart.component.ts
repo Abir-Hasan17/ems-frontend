@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, ViewChild } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { DataPoint, Gradient, trx } from '../../models/interfaces';
-import { trxDummy } from '../../models/dummy-data';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
 import { trxType } from '../../models/enumerators';
+import { transaction } from '../../services/transaction.service';
 
 @Component({
   selector: 'app-line-chart',
@@ -14,7 +14,7 @@ import { trxType } from '../../models/enumerators';
 })
 export class LineChartComponent {
   @Input() label!: string;
-  @Input() transactions!: trx[];
+  @Input() transactions!: transaction[];
   @Input() isInverted = false;
   @Input() fillGradient: Gradient = {
     top: 'rgba(39, 138, 207, 0.3)',
@@ -156,23 +156,33 @@ export class LineChartComponent {
     }
   }
 
-  getDataOverTime(trxList: trx[]): DataPoint[] {
+  getDataOverTime(trxList: transaction[]): DataPoint[] {
+    // Ensure dates are sorted in ascending order
     const sorted = [...trxList].sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      (a, b) =>
+        new Date(a.transactionDate).getTime() -
+        new Date(b.transactionDate).getTime()
     );
 
     let data = 0;
     const result: DataPoint[] = [];
 
     sorted.forEach((trx) => {
+      // Invert logic (e.g., for expenses only)
       if (this.isInverted) {
         data += Math.abs(trx.amount);
       } else {
         data += trx.type === trxType.income ? trx.amount : -trx.amount;
       }
-      result.push({ date: trx.date, data: data });
+
+      // Push ISO date string and cumulative data
+      result.push({
+        date: new Date(trx.transactionDate).toISOString(),
+        data,
+      });
     });
-    console.log(result);
+
+    console.log('data over time', result);
     return result;
   }
 }

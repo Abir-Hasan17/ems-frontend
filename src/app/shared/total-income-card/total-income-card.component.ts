@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { trx } from '../../models/interfaces';
+import { transaction } from '../../services/transaction.service';
 
 @Component({
   selector: 'app-total-income-card',
@@ -8,9 +9,5 @@ import { trx } from '../../models/interfaces';
   styleUrl: './total-income-card.component.css',
 })
 export class TotalIncomeCardComponent {
-  @Input() incomes!: trx[];
-
-  getTotalIncome(): any {
-    return this.incomes.reduce((sum, income) => sum + income.amount, 0);
-  }
+  @Input() totalIncome!: number;
 }

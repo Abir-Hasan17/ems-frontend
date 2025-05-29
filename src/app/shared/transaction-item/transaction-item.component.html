@@ -10,5 +10,5 @@
     <p class="font-medium m-0">{{ trx.label }}</p>
     <div>{{ trx.amount }}$</div>
   </div>
-  <p class="text-sm text-gray-500 m-0">{{ trx.date }}</p>
+  <p class="text-sm text-gray-500 m-0">{{ trx.transactionDate.toISOString }}</p>
 </div>

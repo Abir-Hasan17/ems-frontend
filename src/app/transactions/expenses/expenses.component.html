@@ -14,7 +14,7 @@
       <div class="flex flex-row gap-4">
         <!-- Total Expenses Card -->
         <app-total-expense-card
-          [expenses]="getExpenses()"
+          [totalExpense]="totalExpense"
         ></app-total-expense-card>
         <!-- Number of Expenses Card -->
         <div class="bg-white rounded-lg shadow-sm p-4 border border-rose-50">
@@ -43,7 +43,7 @@
 
         <!-- Highest Expense Card -->
         <app-highest-expense-card
-          [expenses]="getExpenses()"
+          [highestExpense]="highestExpense"
         ></app-highest-expense-card>
       </div>
       <app-line-chart

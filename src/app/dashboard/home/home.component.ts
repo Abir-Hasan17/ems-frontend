@@ -7,6 +7,10 @@ import { trxType } from '../../models/enumerators';
 import { Gradient } from '../../models/interfaces';
 import { TopBarComponent } from '../../shared/top-bar/top-bar.component';
 import { AuthService } from '../../services/auth.service';
+import {
+  transaction,
+  TransactionService,
+} from '../../services/transaction.service';
 
 @Component({
   selector: 'app-home',
@@ -16,9 +20,13 @@ import { AuthService } from '../../services/auth.service';
 })
 export class HomeComponent {
   authServices = inject(AuthService);
+  trxService = inject(TransactionService);
   userId?: string;
 
-  trxList = trxDummy;
+  trxList: transaction[] = [];
+  incomeList: transaction[] = [];
+  expenseList: transaction[] = [];
+
   trxFillGradient: Gradient = {
     top: 'rgba(0, 128, 128, 0.3)',
     bottom: 'rgba(255, 0, 128, 0.1)',
@@ -28,7 +36,6 @@ export class HomeComponent {
     bottom: 'deeppink',
   };
 
-  incomeList = trxDummy.filter((trx) => trx.type == trxType.income);
   incomeFillGradient: Gradient = {
     top: 'rgba(0, 227, 168, 0.8)',
     bottom: 'rgba(5, 226, 169, 0.1)',
@@ -38,7 +45,6 @@ export class HomeComponent {
     bottom: 'rgba(0, 139, 103, 0.5)',
   };
 
-  expenseList = trxDummy.filter((trx) => trx.type == trxType.expense);
   expenseFillGradient: Gradient = {
     top: 'rgba(197, 4, 82, 0.5)',
     bottom: 'rgba(197, 4, 82, 0.1)',
@@ -52,11 +58,26 @@ export class HomeComponent {
     this.authServices.getUserId().subscribe((userId) => {
       if (userId) {
         this.userId = userId;
+        this.fetchTransactions(userId);
         console.log('User ID:', userId);
       } else {
         // Not authenticated
         console.error('User is not authenticated');
       }
+    });
+  }
+
+  fetchTransactions(userId: string) {
+    this.trxService.getTransactionsByUserId(userId).subscribe({
+      next: (data) => {
+        this.trxList = data;
+        this.incomeList = data.filter((trx) => trx.type === trxType.income);
+        this.expenseList = data.filter((trx) => trx.type === trxType.expense);
+        console.log('Transactions loaded:', this.trxList);
+      },
+      error: (err) => {
+        console.error('Failed to load transactions:', err);
+      },
     });
   }
 }

@@ -13,7 +13,9 @@
     >
       <div class="flex flex-row gap-4">
         <!-- Total Income Card -->
-        <app-total-income-card [incomes]="getIncomes()"></app-total-income-card>
+        <app-total-income-card
+          [totalIncome]="totalIncome"
+        ></app-total-income-card>
         <!-- Number of Incomes Card -->
         <div class="bg-white rounded-lg shadow-sm p-4 border border-emerald-50">
           <div class="text-sm font-medium text-gray-500">Transactions</div>
@@ -41,7 +43,7 @@
 
         <!-- Highest Income Card -->
         <app-highest-income-card
-          [incomes]="getIncomes()"
+          [highestIncome]="highestIncome"
         ></app-highest-income-card>
       </div>
       <app-line-chart

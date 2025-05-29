@@ -14,11 +14,17 @@
     class="flex flex-col h-full rounded-b-xl border-x-2 border-b-2 border-violet-950"
   >
     <div class="flex flex-row gap-2 text-center px-4 my-6">
-      <app-total-income-card [incomes]="incomes"></app-total-income-card>
-      <app-highest-income-card [incomes]="incomes"></app-highest-income-card>
-      <app-total-expense-card [expenses]="expenses"></app-total-expense-card>
+      <app-total-income-card
+        [totalIncome]="totalIncome"
+      ></app-total-income-card>
+      <app-highest-income-card
+        [highestIncome]="highestIncome"
+      ></app-highest-income-card>
+      <app-total-expense-card
+        [totalExpense]="totalExpense"
+      ></app-total-expense-card>
       <app-highest-expense-card
-        [expenses]="expenses"
+        [highestExpense]="highestExpense"
       ></app-highest-expense-card>
     </div>
 

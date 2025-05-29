@@ -13,16 +13,40 @@ export class TransactionService {
     const url = `${this.baseUrl}/transactions-by-user-id/${userId}`;
     return this.http.get<transaction[]>(url, { withCredentials: true });
   }
+
+  createTransaction(data: create_transaction_request) {
+    const url = `${this.baseUrl}/create`;
+    return this.http.post<transaction>(url, data, { withCredentials: true });
+  }
+
+  // Update a transaction by ID
+  updateTransaction(id: string, data: create_transaction_request) {
+    const url = `${this.baseUrl}/update/${id}`;
+    return this.http.put<transaction>(url, data, { withCredentials: true });
+  }
+
+  // Delete a transaction by ID
+  deleteTransaction(id: string) {
+    const url = `${this.baseUrl}/delete/${id}`;
+    return this.http.delete<{ message: string }>(url, {
+      withCredentials: true,
+    });
+  }
 }
 
 export interface transaction {
   _id: string;
   userId: string;
-  type: 'income' | 'expense';
+  label: string;
   amount: number;
-  category: string;
-  description?: string;
-  date: string;
-  createdAt?: string;
-  updatedAt?: string;
+  type: 'income' | 'expense';
+  note?: string;
+  transactionDate: Date;
+  modificationDate: Date;
+}
+
+export type create_transaction_request = Omit<transaction, '_id'>;
+
+export function getTotal(trx: transaction[]): number {
+  return trx.reduce((sum, income) => sum + income.amount, 0);
 }

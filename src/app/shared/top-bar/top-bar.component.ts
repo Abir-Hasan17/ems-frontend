@@ -1,9 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
 import { InputComponent } from '../input/input.component';
 import { AddTransactionComponent } from '../../transactions/add-transaction/add-transaction.component';
 import { AddUpdateTransactionComponent } from '../add-update-transaction/add-update-transaction.component';
 import { trx } from '../../models/interfaces';
+import {
+  create_transaction_request,
+  TransactionService,
+} from '../../services/transaction.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -20,6 +24,7 @@ export class TopBarComponent {
   @Input() pageTitle = '';
   @Input() pageIcon = '';
   @Input() pageQuote = '';
+  transactionService = inject(TransactionService);
 
   showAddModal = false;
 
@@ -31,7 +36,11 @@ export class TopBarComponent {
   closeModal() {
     this.showAddModal = false;
   }
-  onSave(returnedTrx: trx) {
+  onSave(returnedTrx: create_transaction_request) {
     console.log(returnedTrx);
+    this.transactionService.createTransaction(returnedTrx).subscribe({
+      next: (res) => console.log('Transaction created:', res),
+      error: (err) => console.error('Creation failed:', err),
+    });
   }
 }
