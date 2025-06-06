@@ -72,12 +72,20 @@
         ></div>
 
         <div class="flex flex-col gap-2 pb-4">
-          @for (item of getIncomes(); track $index) {
+          @if (getIncomes().length > 0) { @for (item of getIncomes(); track
+          $index) {
           <app-transaction-card
             [transaction]="item"
             (updated)="fetchIncomes(userId!)"
             (deleted)="fetchIncomes(userId!)"
           ></app-transaction-card>
+          } } @else {
+          <app-empty-state
+            message="No incomes recorded yet"
+            quote="“Try to save something while your salary is small; it’s impossible to save after you begin to earn more.”"
+            author="– Jack Benny"
+            emoji="📭"
+          ></app-empty-state>
           }
         </div>
 

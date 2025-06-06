@@ -73,12 +73,20 @@
         ></div>
 
         <div class="flex flex-col gap-2 pb-4">
-          @for (item of getExpenses(); track $index) {
+          @if (getExpenses().length > 0) { @for (item of getExpenses(); track
+          $index) {
           <app-transaction-card
             [transaction]="item"
             (updated)="fetchExpenses(userId!)"
             (deleted)="fetchExpenses(userId!)"
           ></app-transaction-card>
+          } } @else {
+          <app-empty-state
+            message="No expenses recorded yet"
+            quote="“Too many people spend money they haven't earned, to buy things they don't want, to impress people they don't like.”"
+            author="– Will Rogers"
+            emoji="💸"
+          ></app-empty-state>
           }
         </div>
 

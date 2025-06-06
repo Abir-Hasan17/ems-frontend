@@ -11,6 +11,7 @@ import {
 } from '../../services/transaction.service';
 import { HighestExpenseCardComponent } from '../../shared/highest-expense-card/highest-expense-card.component';
 import { TotalExpenseCardComponent } from '../../shared/total-expense-card/total-expense-card.component';
+import { EmptyStateComponent } from '../../shared/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-expenses',
@@ -20,6 +21,7 @@ import { TotalExpenseCardComponent } from '../../shared/total-expense-card/total
     TransactionCardComponent,
     HighestExpenseCardComponent,
     TotalExpenseCardComponent,
+    EmptyStateComponent,
   ],
   templateUrl: './expenses.component.html',
   styleUrl: './expenses.component.css',

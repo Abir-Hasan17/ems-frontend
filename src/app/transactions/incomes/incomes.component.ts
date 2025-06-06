@@ -12,6 +12,7 @@ import {
   transaction,
   TransactionService,
 } from '../../services/transaction.service';
+import { EmptyStateComponent } from '../../shared/empty-state/empty-state.component';
 
 @Component({
   selector: 'app-incomes',
@@ -21,6 +22,7 @@ import {
     LineChartComponent,
     HighestIncomeCardComponent,
     TotalIncomeCardComponent,
+    EmptyStateComponent,
   ],
   templateUrl: './incomes.component.html',
   styleUrl: './incomes.component.css',

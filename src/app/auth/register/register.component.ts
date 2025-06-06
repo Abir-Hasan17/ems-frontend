@@ -59,6 +59,7 @@ export class RegisterComponent {
           this.buttonState = loginButtonState.active;
           console.log(this.buttonState);
           console.log(err);
+          alert('Registration failed!');
           throw err;
         })
       )

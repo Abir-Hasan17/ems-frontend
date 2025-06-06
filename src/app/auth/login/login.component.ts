@@ -10,6 +10,7 @@ import { catchError } from 'rxjs';
 import { login_request, login_response } from '../../models/auth';
 import { loginButtonState } from '../../models/enumerators';
 import { Router, RouterModule } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-login',
@@ -18,9 +19,9 @@ import { Router, RouterModule } from '@angular/router';
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
-    InputComponent,
     ReactiveFormsModule,
     RouterModule,
+    MatButtonModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -61,6 +62,7 @@ export class LoginComponent {
           this.buttonState = loginButtonState.active;
           console.log(this.buttonState);
           console.log(err);
+          alert('Login failed!');
           throw err;
         })
       )
