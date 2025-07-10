@@ -1,3 +1,3 @@
 export const environment = {
-  apiUrl: 'http://localhost:5000/api',
+  apiUrl: 'https://ems-backend-agqv.onrender.com/api',
 };
